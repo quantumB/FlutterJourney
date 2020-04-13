@@ -1,8 +1,11 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:english_words/english_words.dart';
 
-void main() => runApp(ListWidget());
+void main() => runApp(MyApp());
 
-class ListWidget extends StatelessWidget {
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
@@ -12,8 +15,19 @@ class ListWidget extends StatelessWidget {
             title: Text('Welcome to Flutter'),
           ),
           body: Center(
-            child: Text('Initial'),
+            child: new RandomWords(),
           ),
         ));
+  }
+}
+class RandomWords extends StatefulWidget {
+  @override
+  RandomWordState createState() => RandomWordState();
+}
+
+class RandomWordState extends State<RandomWords> {
+  Widget build(BuildContext context) {
+    final wordPair = WordPair.random();
+    return Text(wordPair.asPascalCase);
   }
 }
