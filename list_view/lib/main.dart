@@ -1,4 +1,4 @@
-import 'dart:math';
+import 'dart:js';
 
 import 'package:flutter/material.dart';
 import 'package:english_words/english_words.dart';
@@ -13,11 +13,26 @@ class MyApp extends StatelessWidget {
         home: Scaffold(
           appBar: AppBar(
             title: Text('Startup Name Generator'),
+            actions: <Widget>[
+              IconButton(icon: Icon(Icons.list), onPressed: _pushSaved),
+            ],
           ),
-          body: Center(
-            child: new RandomWords(),
-          ),
+          body: new RandomWords(),
         ));
+  }
+
+  void _pushSaved() {
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(
+        builder: (BuildContext context) {
+          final Iterable<ListTile> titles = _saved.map(
+            (WordPair(pair){
+              
+            })
+          );
+        }
+      );
+    );
   }
 }
 
@@ -28,9 +43,9 @@ class RandomWords extends StatefulWidget {
 
 class RandomWordState extends State<RandomWords> {
   final _suggestions = <WordPair>[];
+  final Set<WordPair> _saved = Set<WordPair>();
   final _biggerFont = const TextStyle(fontSize: 18.0);
   Widget build(BuildContext context) {
-    final wordPair = WordPair.random();
     return _buildSuggestions();
   }
 
@@ -50,8 +65,24 @@ class RandomWordState extends State<RandomWords> {
   }
 
   Widget _buildRow(WordPair pair) {
+    final bool alreadySaved = _saved.contains(pair);
     return ListTile(
       title: Text(pair.asPascalCase, style: _biggerFont),
+      trailing: Icon(
+        alreadySaved ? Icons.favorite : Icons.favorite_border,
+        color: alreadySaved ? Colors.red : null,
+      ),
+      onTap: () {
+        setState(() {
+          if (alreadySaved) {
+            _saved.remove(pair);
+          } else {
+            _saved.add(pair);
+          }
+        });
+      },
     );
   }
+
+  
 }
