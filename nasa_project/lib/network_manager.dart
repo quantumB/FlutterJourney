@@ -30,4 +30,8 @@ class Imagery {
       date: json['date'],
     );
   }
+
+  String getPhoto() {
+    return this.image;
+  }
 }
